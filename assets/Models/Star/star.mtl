@@ -1,0 +1,25 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl Material_063_3ED452ED_c_bmp
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.196100 0.196100 0.196100
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd body.png
+
+newmtl Material_065_713E77D_c_bmp
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.796900 0.796900 0.796900
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd eye.png
+map_d eye.png

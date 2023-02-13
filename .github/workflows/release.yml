@@ -78,42 +78,10 @@ jobs:
       with:
         name: NablaGL.windows-x86.zip
         path: NablaGL.windows-x86.zip
-
-  build-macos-x64:
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Setup Conan
-      uses: turtlebrowser/get-conan@v1.0
-
-    - name: Create Conan profile
-      run: |
-        conan profile new default --detect
-
-    - name: Install dependencies
-      run: |
-        conan install . --build missing -pr default -c tools.system.package_manager:mode=install
-
-    - name: Build
-      run: |
-        cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE .
-        cmake --build .
-
-    - name: Package release
-      run: |
-        mv bin/nablagl nablagl.macos-x64
-        zip -r NablaGL.macos-x64.zip nablagl.macos-x64 assets
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: NablaGL.macos-x64.zip
-        path: NablaGL.macos-x64.zip
   
   deploy:
     runs-on: ubuntu-latest
-    needs: [build-ubuntu-x64, build-windows-x86, build-macos-x64]
+    needs: [build-ubuntu-x64, build-windows-x86]
 
     steps:
     - name: Download Ubuntu x64 release
@@ -126,11 +94,6 @@ jobs:
       with:
         name: NablaGL.windows-x86.zip
 
-    - name: Download macOS x64 release
-      uses: actions/download-artifact@v3
-      with:
-        name: NablaGL.macos-x64.zip
-
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
@@ -139,4 +102,3 @@ jobs:
         files: |
           NablaGL.ubuntu-x64.tar.gz
           NablaGL.windows-x86.zip
-          NablaGL.macos-x64.zip

@@ -19,7 +19,10 @@ jobs:
       uses: turtlebrowser/get-conan@v1.0
 
     - name: Create Conan profile
-      run: conan profile new default --detect
+      run: |
+        conan profile new default --detect
+        conan profile update conf.tools.cmake.cmaketoolchain:generator=Ninja default
+        conan profile update tools.system.package_manager:mode=install default
 
     - name: Install dependencies
       run: |

@@ -46,16 +46,55 @@ jobs:
       with:
         name: NablaGL.ubuntu-x64.tar.gz
         path: NablaGL.ubuntu-x64.tar.gz
+
+  build-windows-x86:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Conan
+      uses: turtlebrowser/get-conan@v1.0
+
+    - name: Create Conan profile
+      run: |
+        conan profile new default --detect
+
+    - name: Install dependencies
+      run: |
+        conan install . --build missing -pr default
+    
+    - name: Build
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE .
+        cmake --build .
+
+    - name: Package release
+      run: |
+        move bin\nablagl.exe NablaGL.exe
+        7z a -tzip NablaGL.windows-x86.zip NablaGL.exe assets
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: NablaGL.windows-x86.zip
+        path: NablaGL.windows-x86.zip
   
   deploy:
     runs-on: ubuntu-latest
-    needs: build-ubuntu-x64
+    needs: [build-ubuntu-x64, build-windows-x86]
 
     steps:
-    - name: Download artifacts
+    - name: Download Ubuntu x64 release
       uses: actions/download-artifact@v3
       with:
         name: NablaGL.ubuntu-x64.tar.gz
+        path: NablaGL.ubuntu-x64.tar.gz
+
+    - name: Download Windows x86 release
+      uses: actions/download-artifact@v3
+      with:
+        name: NablaGL.windows-x86.zip
+        path: NablaGL.windows-x86.zip
 
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -63,3 +102,4 @@ jobs:
       with:
         files: |
           NablaGL.ubuntu-x64.tar.gz
+          NablaGL.windows-x86.zip

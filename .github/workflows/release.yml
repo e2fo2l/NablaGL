@@ -23,6 +23,11 @@ jobs:
         conan profile new default --detect
         conan profile update conf.tools.cmake.cmaketoolchain:generator=Ninja default
 
+    - name: Install OpenGL
+      run: |
+        sudo apt update
+        sudo apt install libopengl-dev -y
+
     - name: Install dependencies
       run: |
         conan install . --build missing -pr default -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True

@@ -25,7 +25,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        conan install . --build missing -pr default -c tools.system.package_manager:mode=install
+        conan install . --build missing -pr default -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True
 
     - name: Build
       run: |

@@ -22,11 +22,10 @@ jobs:
       run: |
         conan profile new default --detect
         conan profile update conf.tools.cmake.cmaketoolchain:generator=Ninja default
-        conan profile update tools.system.package_manager:mode=install default
 
     - name: Install dependencies
       run: |
-        conan install . --build missing -pr default
+        CONAN_SYSREQUIRES_MODE=enabled conan install . --build missing -pr default
 
     - name: Build
       run: |

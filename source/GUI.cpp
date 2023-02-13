@@ -2,7 +2,13 @@
 
 #include "utils/imgui/imgui_impl_glfw.h"
 #include "utils/imgui/imgui_impl_opengl3.h"
+
+#if defined(__APPLE__)
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
+
 #include <imgui.h>
 #include <string>
 

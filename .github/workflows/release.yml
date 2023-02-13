@@ -1,0 +1,57 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build-ubuntu-x64:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Conan
+      uses: conan-io/actions-conan@v1
+      with:
+        conan-version: 1.55.0
+        setup-mode: minimal
+
+    - name: Install dependencies
+      run: |
+        conan install . --build missing
+
+    - name: Build
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE .
+        cmake --build .
+    
+    - name: Package release
+      run: |
+        mv bin/nablagl nablagl.ubuntu-x64
+        tar -zcvf NablaGL.ubuntu-x64.tar.gz nablagl.ubuntu-x64 assets/
+    
+    - uses: actions/upload-artifact@v3
+      with:
+        name: NablaGL.ubuntu-x64.tar.gz
+        path: NablaGL.ubuntu-x64.tar.gz
+  
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: NablaGL.*
+    
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          NablaGL.ubuntu-x64.tar.gz

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.12)
 project(NablaGL)
 
 add_definitions("-std=c++11")
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()

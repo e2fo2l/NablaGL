@@ -344,7 +344,7 @@ int main(void) {
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
-    // glfwSwapInterval(0); // <- VSYNC
+    glfwSwapInterval(1); // <- VSYNC
     glfwSetWindowSizeCallback(window, OnWindowResize);
     glfwSetMouseButtonCallback(window, OnMouseClick);
     Initialise();

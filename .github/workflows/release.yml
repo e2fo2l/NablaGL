@@ -25,7 +25,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        CONAN_SYSREQUIRES_MODE=enabled conan install . --build missing -pr default
+        conan install . --build missing -pr default -c tools.system.package_manager:mode=install
 
     - name: Build
       run: |
